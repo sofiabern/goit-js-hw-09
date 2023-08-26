@@ -53,12 +53,15 @@ function updateTimer() {
   const timeDifference = selectedDate - currentTime;
   if (timeDifference <= 0) {
     clearInterval(countdownInterval);
-    startBtn.disabled = false;
+
     Notiflix.Notify.success('Timer has ended!');
     timerFields[0].textContent = '00';
     timerFields[1].textContent = '00';
     timerFields[2].textContent = '00';
     timerFields[3].textContent = '00';
+    startBtn.disabled = false;
+    input.disabled = false;
+    timerStarted = false;
     return;
   }
   const { days, hours, minutes, seconds } = convertMs(timeDifference);
