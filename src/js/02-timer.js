@@ -7,6 +7,8 @@ const startBtn = document.querySelector('[data-start]');
 const timerFields = document.querySelectorAll('.value');
 
 let selectedDate;
+let timerStarted = false; // Флаг, що показує, чи таймер був запущений
+let countdownInterval; // Зберігатиме посилання на інтервал
 
 const options = {
   enableTime: true,
@@ -43,8 +45,6 @@ function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
 
-let countdownInterval;
-
 function updateTimer() {
   if (!selectedDate) {
     return;
@@ -67,14 +67,20 @@ function updateTimer() {
   timerFields[2].textContent = addLeadingZero(minutes);
   timerFields[3].textContent = addLeadingZero(seconds);
 }
-
+// Обробник натискання на кнопку старту
 startBtn.addEventListener('click', onClickHandler);
 function onClickHandler() {
-  if (countdownInterval) {
+  if (timerStarted) {
     return;
   }
+  timerStarted = true;
+  // Заблокувати календар після запуску таймера
   startBtn.disabled = true;
-
+  input.disabled = true;
+  // input.classList.add('disabled');
+  // Очистити попередній інтервал (якщо він був)
+  clearInterval(countdownInterval);
+  // Запустити таймер
   updateTimer();
   countdownInterval = setInterval(updateTimer, 1000);
 }
